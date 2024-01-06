@@ -1,6 +1,6 @@
 # CHALLENGE 1: Deployment of several kubernetes resources
 
-![Challenge 1](https://drive.google.com/file/d/1HCJC-Q6yJlD-oNY2CrO5QFYA_Mg1IBKm/view?usp=drive_link)
+![Challenge 1](https://drive.google.com/uc?export=view&id=1HCJC-Q6yJlD-oNY2CrO5QFYA_Mg1IBKm)
 
 #### The ultimate goal of this challenge was to deploy a webservice using four replica sets.
 
