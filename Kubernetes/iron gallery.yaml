@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iron-gallery-deployment-datacenter
+  namespace: iron-namespace-datacenter
+  labels:
+    run: iron-gallery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: iron-gallery
+  template:
+    metadata:
+      labels:
+        run: iron-gallery
+    spec:
+      containers:
+      - name: iron-gallery-container-datacenter
+        image: kodekloud/irongallery:2.0
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html/data
+            name: config
+          - mountPath: /usr/share/nginx/html/uploads
+            name: images
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: images
+          emptyDir: {}
+        
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iron-db-deployment-datacenter
+  namespace: iron-namespace-datacenter
+  labels:
+    db: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      db: mariadb
+  template:
+    metadata:
+      labels:
+        db: mariadb
+    spec:
+      containers:
+      - name: iron-db-container-datacenter
+        image: kodekloud/irondb:2.0
+        ports:
+        - containerPort: 3306
+        env:
+          - name: MYSQL_DATABASE
+            value: "database_blog"
+          - name: MYSQL_ROOT_PASSWORD
+            value: "ajkdjskslksdkjsf"
+          - name: MYSQL_PASSWORD
+            value: "kanjakjelkek"
+          - name: MYSQL_USER
+            value: "kodekloud"
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: db
+      volumes:
+        - name: db
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iron-gallery-service-datacenter
+  namespace: iron-namespace-datacenter
+spec:
+  selector:
+    run: iron-gallery
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 32678
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iron-db-service-datacenter
+  namespace: iron-namespace-datacenter
+spec:
+  selector:
+    db: mariadb
+  type: ClusterIP
+  ports:
+  - port: 3306
+    targetPort: 3306
+    protocol: TCP
+
+
+
