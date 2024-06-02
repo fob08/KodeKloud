@@ -58,4 +58,21 @@ EXPOSE 8081
 cd /opt/docker
 docker build -t apache2 .
 docker run --name http -p 3081:3001 -d apache2
-curl -Ik http://localhost:8081
+curl -Ik http://localhost:3001
+
+#Nautilus developers are actively working on one of the project repositories, /usr/src/kodekloudrepos/beta. Recently, they decided to implement some new features in the application, and they want to maintain those new changes in a separate branch. Below are the requirements that have been shared with the DevOps team: On Storage server in Stratos DC create a new branch xfusioncorp_beta from master branch in /usr/src/kodekloudrepos/beta git repo. Please do not try to make any changes in the code.
+
+git branch xfusioncorp_beta master
+
+
+#The Nautilus application development team has been working on a project repository /opt/ecommerce.git. This repo is cloned at /usr/src/kodekloudrepos on storage server in Stratos DC. They recently shared the following requirements with DevOps team: Create a new branch nautilus in /usr/src/kodekloudrepos/ecommerce repo from master and copy the /tmp/index.html file (present on storage server itself) into the repo. Further, add/commit this file in the new branch and merge back that branch into master branch. Finally, push the changes to the origin for both of the branches.
+
+cd /usr/src/kodekloudrepos/ecommerce
+git branch nautilus master
+cp /tmp/index.html /usr/src/kodekloudrepos/ecommerce
+git checkout nautilus
+git add .
+ git commit -m "latest"
+ git checkout master
+ git merge -m "ljel" nautilus
+ git push
