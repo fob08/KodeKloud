@@ -42,3 +42,20 @@ ls -la
 sed -i 's/Listen 80/Listen 50001/g' ports.conf
  service apache2 start
  service apache2 status
+
+ #As per recent requirements shared by the Nautilus application development team, they need custom images created for one of their projects. Several of the initial testing requirements are already been shared with DevOps team. Therefore, create a docker file /opt/docker/Dockerfile (please keep D capital of Dockerfile) on App server 1 in Stratos DC and configure to build an image with the following requirements: a. Use ubuntu as the base image. b. Install apache2 and configure it to work on 3001 port. (do not update any other Apache configuration settings like document root etc).
+
+vi /opt/docker/Dockerfile
+
+FROM ubuntu
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update
+RUN apt-get install apache2 -y
+RUN sed -i "s/80/8081/g" /etc/apache2/ports.conf
+EXPOSE 8081
+ CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND", "-k", "start"]
+
+cd /opt/docker
+docker build -t apache2 .
+docker run --name http -p 3081:3001 -d apache2
+curl -Ik http://localhost:8081
