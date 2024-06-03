@@ -41,3 +41,10 @@ Note: For these kind of scenarios requiring changes to be done in a web UI, plea
 
 git reset --hard <commit hash>
 git checkout master; git push -f
+
+
+The Nautilus application development team was working on a git repository /usr/src/kodekloudrepos/media present on Storage server in Stratos DC. One of the developers mistakenly created a couple of files under this repository, but now they want to clean this repository without adding/pushing any new files. Find below more details:
+Clean the /usr/src/kodekloudrepos/media git repository without adding/pushing any new files, make sure git status is clean.
+
+git status
+git clean -xdf /usr/src/kodekloudrepos/media
